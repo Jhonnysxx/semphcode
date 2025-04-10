@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { FiSearch, FiImage, FiRefreshCw, FiSettings } from 'react-icons/fi';
 import { toast } from 'react-toastify';
-import { imageService } from '../../utils/functions/imageApis';
-import { ImageApiConfig, ImageResult, SearchImageParams } from '../../utils/functions/imageApis.d';
+import { imageService, ImageResult, SearchImageParams } from '../../utils/functions/imageApis';
 import './ImageSearch.css';
 
 interface ImageSearchProps {
@@ -32,24 +31,25 @@ export default function ImageSearch({ onSelectImage, onClose }: ImageSearchProps
   useEffect(() => {
     const fetchApiKeys = async () => {
       try {
-        const response = await fetch('/api/image-api-keys');
-        if (response.ok) {
-          const data = await response.json();
-          
-          // Atualizar as chaves no serviço de imagens
-          imageService.updateApiKeys(data);
-          
-          // Atualizar o estado local com as chaves existentes
-          setApiKeys({
-            unsplash: data.unsplash?.apiKey || '',
-            pixabay: data.pixabay?.apiKey || '',
-            pexels: data.pexels?.apiKey || ''
-          });
-          
-          // Verificar se alguma API está configurada
-          const hasAnyConfigured = !!data.unsplash?.apiKey || !!data.pixabay?.apiKey || !!data.pexels?.apiKey;
-          setShowSettings(!hasAnyConfigured);
+        const response = await fetch('https://semphcode.onrender.com/api/image-api-keys');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
         }
+        const data = await response.json();
+        
+        // Atualizar as chaves no serviço de imagens
+        imageService.updateApiKeys(data);
+        
+        // Atualizar o estado local com as chaves existentes
+        setApiKeys({
+          unsplash: data.unsplash?.apiKey || '',
+          pixabay: data.pixabay?.apiKey || '',
+          pexels: data.pexels?.apiKey || ''
+        });
+        
+        // Verificar se alguma API está configurada
+        const hasAnyConfigured = !!data.unsplash?.apiKey || !!data.pixabay?.apiKey || !!data.pexels?.apiKey;
+        setShowSettings(!hasAnyConfigured);
       } catch (error) {
         console.error('Erro ao buscar as chaves de API:', error);
         setShowSettings(true);

@@ -4,6 +4,7 @@ import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
+import cors from "cors";
 
 import { defaultHTML } from "./utils/consts.js";
 
@@ -17,8 +18,27 @@ const __dirname = path.dirname(__filename);
 
 const PORT = process.env.APP_PORT || 5173;
 
+// Configuração do CORS
+const allowedOrigins = [
+  'http://localhost:5173', // Para desenvolvimento local
+  'https://seudominio-hostinger.com', // SUBSTITUA PELO SEU DOMÍNIO NA HOSTINGER
+  // Adicione outras origens permitidas aqui, se necessário
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Permitir requisições sem 'origin' (como Postman, apps mobile, etc.) ou de origens permitidas
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true // Se você usa cookies ou headers de autorização
+}));
+
 app.use(cookieParser());
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '50mb' }));
 app.use(express.static(path.join(__dirname, "dist")));
 
 // Endpoint para fornecer as chaves de API de imagens quando solicitadas

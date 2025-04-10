@@ -138,7 +138,7 @@ function ChatInterface({
         setMessages((prevMessages) => [...prevMessages, aiMessage]);
         
         // Usando endpoint diferente para perguntas de chat
-        const request = await fetch("/api/chat", {
+        const request = await fetch("https://semphcode.onrender.com/api/chat", {
           method: "POST",
           body: JSON.stringify({
             prompt,
@@ -194,7 +194,7 @@ function ChatInterface({
     
     try {
       // Usar o endpoint DeepSeek
-      const request = await fetch("/api/deepseek", {
+      const request = await fetch("https://semphcode.onrender.com/api/deepseek", {
         method: "POST",
         body: JSON.stringify({
           prompt,

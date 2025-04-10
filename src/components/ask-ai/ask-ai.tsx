@@ -38,8 +38,9 @@ function AskAI({
     let lastRenderTime = 0;
     
     try {
-      // Usar o endpoint DeepSeek
-      const request = await fetch("/api/deepseek", {
+      // Usar o endpoint DeepSeek para IA genérica
+      console.log("Enviando para /api/deepseek com a pergunta:", prompt);
+      const request = await fetch("https://semphcode.onrender.com/api/deepseek", {
         method: "POST",
         body: JSON.stringify({
           prompt,

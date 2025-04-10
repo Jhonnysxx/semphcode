@@ -1,10 +1,42 @@
-import { 
-  ImageApiConfig, 
-  ImageApiService,
-  ImageResult,
-  SearchImageParams,
-  SearchImageResponse
-} from './imageApis.d';
+// Definição das Interfaces/Tipos diretamente no arquivo
+export interface ImageResult {
+  id: string;
+  source: 'unsplash' | 'pixabay' | 'pexels';
+  url: string;
+  smallUrl: string;
+  downloadUrl: string;
+  width: number;
+  height: number;
+  alt: string;
+  photographer?: string;
+  photographerUrl?: string;
+}
+
+export interface SearchImageParams {
+  query: string;
+  page?: number;
+  perPage?: number;
+  orientation?: 'landscape' | 'portrait' | 'square';
+  color?: string; // Adicionado parâmetro de cor
+}
+
+export interface SearchImageResponse {
+  results: ImageResult[];
+  totalPages: number;
+  currentPage: number;
+}
+
+export interface ImageApiConfig {
+  unsplash: { apiKey: string; enabled: boolean };
+  pixabay: { apiKey: string; enabled: boolean };
+  pexels: { apiKey: string; enabled: boolean };
+}
+
+export interface ImageApiService {
+  isConfigured(): boolean;
+  search(params: SearchImageParams): Promise<SearchImageResponse>;
+  getRandomImage(query?: string): Promise<ImageResult | null>;
+}
 
 // Configuração das APIs
 let apiConfig: ImageApiConfig = {
@@ -427,7 +459,7 @@ export class ImageService {
     let totalPages = 0;
     
     // Chama as APIs configuradas em paralelo
-    const promises = [];
+    const promises: Promise<SearchImageResponse>[] = []; // Tipagem explícita do array
     
     if (apiConfig.unsplash.enabled) {
       promises.push(this.unsplash.search(params));
@@ -448,7 +480,7 @@ export class ImageService {
     // Aguarda todas as chamadas de API terminarem
     const responses = await Promise.all(promises);
     
-    // Combina os resultados
+    // Combina os resultados (agora deve funcionar com a tipagem correta)
     for (const response of responses) {
       results.push(...response.results);
       totalPages = Math.max(totalPages, response.totalPages);
@@ -465,7 +497,7 @@ export class ImageService {
   // Obtém uma imagem aleatória de uma das APIs configuradas
   async getRandomImage(query?: string): Promise<ImageResult | null> {
     // Lista de APIs habilitadas
-    const enabledApis = [];
+    const enabledApis: string[] = []; // Tipagem explícita do array
     
     if (apiConfig.unsplash.enabled) enabledApis.push('unsplash');
     if (apiConfig.pixabay.enabled) enabledApis.push('pixabay');

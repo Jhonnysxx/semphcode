@@ -10,7 +10,8 @@ import ChatInterface from "./chat/ChatInterface";
 import { defaultHTML } from "../utils/consts";
 import Header from "./header/header";
 import ImageSearch from "./image-search/ImageSearch";
-import { ImageResult } from "../utils/functions/imageApis.d";
+import { ImageResult } from "../../utils/functions/imageApis";
+import { AskAi } from "../ask-ai/ask-ai";
 
 function App() {
   // Refs
