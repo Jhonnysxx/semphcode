@@ -21,7 +21,7 @@ const PORT = process.env.APP_PORT || 5173;
 // Configuração do CORS
 const allowedOrigins = [
   'http://localhost:5173', // Para desenvolvimento local
-  'https://seudominio-hostinger.com', // SUBSTITUA PELO SEU DOMÍNIO NA HOSTINGER
+  'https://deeppink-jaguar-754948.hostingersite.com', // Domínio correto da Hostinger adicionado
   // Adicione outras origens permitidas aqui, se necessário
 ];
 
