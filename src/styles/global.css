@@ -1,0 +1,1071 @@
+@import "tailwindcss";
+
+/* Variáveis CSS personalizadas */
+:root {
+  --primary-gradient: linear-gradient(135deg, #3a7bd5, #7a60ff);
+  --secondary-gradient: linear-gradient(135deg, #6e45e2, #88d3ce);
+  --accent-gradient: linear-gradient(135deg, #ec4899, #f43f5e);
+  --bg-dark: #121212;
+  --bg-card: rgba(35, 35, 45, 0.6);
+  --bg-card-hover: rgba(42, 42, 52, 0.7);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --text-primary: #f8fafc;
+  --text-secondary: #a1a1aa;
+  --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 8px 16px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.3);
+  --glass-bg: rgba(25, 25, 35, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --glass-blur: 12px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+}
+
+/* Base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Noto Sans", sans-serif;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  overflow-x: hidden;
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+  background-color: #1e1e1e;
+}
+
+::-webkit-scrollbar-track {
+  background: #1e1e1e;
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(100, 100, 100, 0.5);
+  border-radius: 7px;
+  border: 3px solid #1e1e1e;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(120, 120, 120, 0.7);
+}
+
+::-webkit-scrollbar-corner {
+  background: #1e1e1e;
+}
+
+/* Typography */
+.font-code {
+  font-family: "Source Code Pro", monospace;
+}
+
+/* Botões modernos */
+.btn {
+  @apply text-white text-sm py-1.5 px-3 lg:py-2 lg:px-4 rounded-lg flex items-center justify-center gap-1.5;
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(var(--glass-blur));
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+  background: var(--bg-card-hover);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-primary {
+  background: var(--primary-gradient);
+  border: none;
+}
+
+.btn-primary:hover {
+  background-image: linear-gradient(135deg, #3a7bd5, #8878ff);
+  box-shadow: 0 6px 15px rgba(122, 96, 255, 0.25);
+}
+
+/* Layout */
+.container-app {
+  @apply h-screen font-sans overflow-hidden;
+  background-color: var(--bg-dark);
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(122, 96, 255, 0.08) 0%, transparent 50%), 
+    radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.07) 0%, transparent 50%);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Editor specific styles */
+.editor-container {
+  @apply relative overflow-hidden max-lg:transition-all max-lg:duration-200 select-none;
+  background-color: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--glass-border);
+  min-height: 0;
+}
+
+.resizer {
+  @apply w-1 cursor-col-resize max-lg:hidden;
+  background-color: var(--glass-border);
+  position: relative;
+  transition: background-color 0.2s ease;
+  margin: 0;
+  z-index: 25;
+}
+
+.resizer:hover {
+  background-color: rgba(122, 96, 255, 0.5);
+  width: 2px;
+}
+
+.resizer::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1px;
+  height: 30px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 1px;
+}
+
+/* Floating container for preview */
+.preview-floating-container {
+  width: calc(100% - 30px);
+  margin: 0 auto;
+  height: calc(100% - 30px);
+  margin-top: 15px;
+  margin-bottom: 15px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--glass-bg);
+}
+
+/* Preview background effect */
+.preview-floating-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  background: radial-gradient(
+    circle at top left,
+    rgba(122, 96, 255, 0.1),
+    transparent 40%
+  ), radial-gradient(
+    circle at bottom right,
+    rgba(236, 72, 153, 0.08),
+    transparent 40%
+  );
+  opacity: 0.6;
+  border-radius: var(--radius-lg);
+}
+
+/* Chat container styles - Glassmorphism */
+.chat-container {
+  width: 100%;
+  margin: 20px auto;
+  height: calc(100% - 40px);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--glass-bg);
+}
+
+.chat-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  background: radial-gradient(
+    circle at top right,
+    rgba(122, 96, 255, 0.12),
+    transparent 40%
+  ), radial-gradient(
+    circle at bottom left,
+    rgba(236, 72, 153, 0.12),
+    transparent 40%
+  );
+  opacity: 0.6;
+  border-radius: var(--radius-lg);
+}
+
+/* Chat input modernizado */
+.chat-input {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  border-radius: 24px;
+  background: rgba(30, 41, 59, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.chat-input:focus-within {
+  border-color: rgba(59, 130, 246, 0.5);
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.2);
+}
+
+/* Efeito de brilho para mensagens do usuário */
+@keyframes messageBorderGlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Chat message bubbles - glassmorphism style */
+.chat-message-bubble {
+  padding: 12px 16px;
+  border-radius: 16px;
+  width: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  animation: messageAppear 0.3s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.chat-message-bubble--user {
+  background: rgba(30, 40, 90, 0.6);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  color: #e2e8f0;
+  backdrop-filter: blur(8px);
+  border-top-right-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.chat-message-bubble--user::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.4), rgba(37, 99, 235, 0.2));
+  z-index: -1;
+}
+
+.chat-message-bubble--assistant {
+  background: rgba(25, 25, 35, 0.6);
+  border: 1px solid rgba(122, 96, 255, 0.2);
+  color: #e2e8f0;
+  backdrop-filter: blur(8px);
+  border-top-left-radius: 4px;
+}
+
+.chat-message-bubble--assistant::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(122, 96, 255, 0.15), rgba(58, 123, 213, 0.05));
+  z-index: -1;
+}
+
+/* Estilo para chat-message-bubble--chat (perguntas sobre programação) */
+.chat-message-bubble--chat {
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.chat-message-bubble--chat::before {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.05));
+}
+
+/* Estilo para chat-message-bubble--info (mensagens informativas) */
+.chat-message-bubble--info {
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.chat-message-bubble--info::before {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(217, 119, 6, 0.05));
+}
+
+/* Chat message container com efeito de brilho na borda */
+.message-container {
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.message-container:hover .message-time {
+  opacity: 1;
+}
+
+.message-time {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 0.25rem;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+/* Efeito brilho sutil para bolhas de mensagem */
+.chat-message-bubble--assistant::after,
+.chat-message-bubble--user::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(45deg, 
+    rgba(255, 255, 255, 0.1), 
+    rgba(255, 255, 255, 0.05), 
+    rgba(255, 255, 255, 0.01), 
+    rgba(255, 255, 255, 0.05)
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.chat-message-bubble--assistant:hover::after,
+.chat-message-bubble--user:hover::after {
+  opacity: 0.7;
+}
+
+/* Customização para scrollbar no chat */
+.chat-scroller::-webkit-scrollbar-thumb {
+  background: rgba(120, 113, 255, 0.4);
+}
+
+.chat-scroller::-webkit-scrollbar-thumb:hover {
+  background: rgba(120, 113, 255, 0.6);
+}
+
+/* Send button styling */
+.send-button {
+  padding: 10px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.send-button:hover:not(:disabled) {
+  transform: scale(1.05);
+  background: linear-gradient(135deg, #1d4ed8, #2563eb);
+}
+
+.send-button:disabled {
+  background: rgba(42, 42, 52, 0.7);
+  box-shadow: none;
+}
+
+/* Estilização do campo textarea */
+.prompt-container textarea {
+  font-family: inherit;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  line-height: 1.5;
+  overflow-y: auto;
+  display: flex;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.prompt-container textarea::-webkit-scrollbar {
+  width: 4px;
+}
+
+.prompt-container textarea::-webkit-scrollbar-thumb {
+  background: rgba(120, 113, 255, 0.4);
+  border-radius: 10px;
+}
+
+.prompt-container textarea::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Efeito de pulso para o indicador de digitação */
+@keyframes pulse {
+  0% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.7;
+  }
+}
+
+.typing-pulse {
+  animation: pulse 1.5s infinite;
+}
+
+/* Glass components */
+.glass-component {
+  background: rgba(42, 42, 52, 0.5);
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--glass-shadow);
+}
+
+/* Tab styling */
+.preview-tab {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.75rem;
+}
+
+.preview-tab:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.preview-tab.active {
+  background: linear-gradient(135deg, rgba(122, 96, 255, 0.15), rgba(58, 123, 213, 0.1));
+  color: #7a60ff;
+  border: 1px solid rgba(122, 96, 255, 0.2);
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  margin-top: 0;
+  min-width: 200px;
+  background: rgba(35, 35, 45, 0.8);
+  backdrop-filter: blur(16px);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border);
+  overflow: hidden;
+  box-shadow: var(--glass-shadow);
+  z-index: 100;
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dropdown-menu.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  color: var(--text-primary);
+  transition: all 0.15s ease;
+  font-size: 0.875rem;
+}
+
+.dropdown-item:hover {
+  background: rgba(122, 96, 255, 0.1);
+}
+
+.dropdown-divider {
+  height: 1px;
+  background: var(--glass-border);
+  margin: 0.25rem 0;
+}
+
+/* Chat interface */
+.chat-message {
+  transition: all 0.3s ease;
+  animation: messageAppear 0.3s forwards;
+}
+
+.chat-avatar {
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.chat-avatar::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  animation: avatarGlow 3s linear infinite;
+}
+
+/* Animações */
+@keyframes avatarGlow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes typing {
+  0%, 100% { width: 0; }
+  50% { width: 100%; }
+}
+
+.typing-animation {
+  overflow: hidden;
+  position: relative;
+  animation: typing 2s infinite;
+  white-space: nowrap;
+}
+
+/* Efeitos de vidro */
+.glass-effect {
+  background: rgba(40, 40, 50, 0.4);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+}
+
+.glass-button {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+/* Responsividade */
+.mobile-hidden {
+  @apply hidden lg:inline-block;
+}
+
+/* Animações adicionais */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes messageAppear {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Header melhorado */
+.header {
+  @apply flex justify-between items-center px-4 py-2 w-full;
+  background: rgba(25, 25, 35, 0.75);
+  backdrop-filter: blur(var(--glass-blur));
+  border-bottom: 1px solid var(--glass-border);
+  height: 56px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 30;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Menu */
+.menu-container {
+  position: relative;
+}
+
+.menu-trigger {
+  @apply flex items-center gap-2 px-3 py-1.5 rounded-lg;
+  background: rgba(50, 50, 60, 0.4);
+  border: 1px solid var(--glass-border);
+  transition: all 0.2s ease;
+  backdrop-filter: blur(var(--glass-blur));
+}
+
+.menu-trigger:hover {
+  background: rgba(70, 70, 80, 0.5);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Tooltip personalizado */
+.tooltip {
+  position: relative;
+}
+
+.tooltip:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: -36px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(30, 30, 40, 0.95);
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 100;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--glass-border);
+}
+
+.tooltip:hover::before {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-bottom-color: rgba(30, 30, 40, 0.95);
+  z-index: 100;
+}
+
+/* Badges */
+.badge {
+  @apply text-xs px-2 py-0.5 rounded-full;
+  background: rgba(122, 96, 255, 0.2);
+  color: rgb(157, 142, 255);
+  border: 1px solid rgba(122, 96, 255, 0.3);
+}
+
+.badge-green {
+  background: rgba(16, 185, 129, 0.2);
+  color: rgb(52, 211, 153);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.badge-red {
+  background: rgba(239, 68, 68, 0.2);
+  color: rgb(252, 165, 165);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* Corrige o layout flexbox para evitar problemas de espaço */
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
+}
+
+.flex-content {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Melhora a área de tabs */
+.tabs-container {
+  border-bottom: 1px solid var(--glass-border);
+  background-color: rgba(30, 30, 40, 0.6);
+  backdrop-filter: blur(var(--glass-blur));
+  flex-shrink: 0;
+}
+
+/* Correções para overflow do chat e do preview */
+.overflow-container {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+}
+
+/* Fix para scrollbars personalizados */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Efeitos de brilho para botões e elementos interativos */
+.glow-effect {
+  position: relative;
+  z-index: 1;
+}
+
+.glow-effect::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: inherit;
+  opacity: 0.4;
+  filter: blur(12px);
+  transition: all 0.3s ease;
+}
+
+.glow-effect:hover::after {
+  opacity: 0.6;
+  filter: blur(15px);
+}
+
+/* Estilo para elementos focados */
+.focus-ring {
+  transition: all 0.2s ease;
+}
+
+.focus-ring:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Corrige o CSS para telas menores */
+@media (max-width: 768px) {
+  .header {
+    height: 50px;
+    padding: 0 12px;
+  }
+  
+  .preview-floating-container,
+  .chat-container {
+    width: calc(100% - 20px);
+    margin: 10px auto;
+    height: calc(100% - 20px);
+  }
+  
+  .dropdown-menu {
+    width: 180px;
+    right: -10px;
+  }
+  
+  .flex-1 {
+    flex: 1 1 0%;
+  }
+  
+  .preview-actions {
+    gap: 1rem !important;
+  }
+  
+  .preview-actions button {
+    font-size: 1rem !important;
+  }
+}
+
+/* Estilos para filtro de elementos svg */
+.filter-none {
+  filter: brightness(0) invert(1);
+}
+
+/* Estilização dos avatares com efeito glassmorphism */
+.glass-avatar {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.glass-avatar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(45deg, 
+    rgba(255, 255, 255, 0.1), 
+    rgba(255, 255, 255, 0), 
+    rgba(255, 255, 255, 0.1)
+  );
+  z-index: 0;
+}
+
+.glass-avatar::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(45deg, 
+    rgba(255, 255, 255, 0.3), 
+    rgba(255, 255, 255, 0), 
+    rgba(255, 255, 255, 0.3)
+  );
+  border-radius: inherit;
+  filter: blur(5px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.glass-avatar:hover::after {
+  opacity: 0.5;
+}
+
+/* Remover os estilos do file-explorer-item */
+.file-explorer-item {
+  display: none;
+}
+
+.file-explorer-item:hover {
+  display: none;
+}
+
+/* Editor Monaco Personalizado */
+.monaco-editor-container .monaco-editor,
+.monaco-editor-container .monaco-editor .margin,
+.monaco-editor-container .monaco-editor-background {
+  background-color: #1e1e1e !important;
+}
+
+.monaco-editor-container .monaco-editor .scrollbar {
+  opacity: 1 !important;
+}
+
+.monaco-editor-container .monaco-editor .scroll-decoration {
+  box-shadow: none !important;
+}
+
+.monaco-editor-container .monaco-editor .monaco-scrollable-element {
+  overflow: auto !important;
+}
+
+.code-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #1e1e1e;
+  border-radius: 0 0 8px 8px;
+}
+
+.monaco-editor-container {
+  flex: 1;
+  overflow: hidden;
+  border-radius: 0 0 8px 8px;
+}
+
+/* Melhorias para barras de rolagem */
+::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+  background-color: #1e1e1e;
+}
+
+::-webkit-scrollbar-track {
+  background: #1e1e1e;
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(100, 100, 100, 0.5);
+  border-radius: 7px;
+  border: 3px solid #1e1e1e;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(120, 120, 120, 0.7);
+}
+
+::-webkit-scrollbar-corner {
+  background: #1e1e1e;
+}
+
+.file-explorer::-webkit-scrollbar {
+  width: 8px;
+  background-color: #1e1e1e;
+}
+
+.file-explorer::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+.file-explorer::-webkit-scrollbar-thumb {
+  background: rgba(80, 80, 80, 0.5);
+  border: 2px solid #1e1e1e;
+  border-radius: 4px;
+}
+
+.file-explorer::-webkit-scrollbar-corner {
+  background: #1e1e1e;
+}
+
+/* Estilos para o botão de busca de imagens no chat */
+.image-search-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  background: rgba(236, 72, 153, 0.2);
+  color: rgb(236, 132, 193);
+  border: 1px solid rgba(236, 72, 153, 0.3);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.image-search-button:hover:not(:disabled) {
+  background: rgba(236, 72, 153, 0.3);
+  transform: translateY(-1px);
+}
+
+.image-search-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.image-search-button svg {
+  flex-shrink: 0;
+}
+
+/* Estilos para o componente de chat tools */
+.chat-tools {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.chat-mode-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chat-mode-toggle.chat-mode {
+  background: rgba(16, 185, 129, 0.2);
+  color: rgb(110, 231, 183);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.chat-mode-toggle.code-mode {
+  background: rgba(59, 130, 246, 0.2);
+  color: rgb(147, 197, 253);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.chat-mode-toggle:hover {
+  transform: translateY(-1px);
+}
+
+.chat-mode-toggle.chat-mode:hover {
+  background: rgba(16, 185, 129, 0.3);
+}
+
+.chat-mode-toggle.code-mode:hover {
+  background: rgba(59, 130, 246, 0.3);
+}
+
+.chat-mode-toggle svg {
+  flex-shrink: 0;
+}
+
+/* Estilos para o componente de chat input */
+.chat-input {
+  padding: 16px;
+  border-top: 1px solid var(--glass-border);
+}
+
+.input-container {
+  position: relative;
+  display: flex;
+}
+
+.input-container textarea {
+  flex: 1;
+  resize: none;
+  height: 60px;
+  padding: 12px 50px 12px 16px;
+  border-radius: 12px;
+  background: rgba(30, 30, 40, 0.6);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.5;
+  transition: all 0.2s ease;
+}
+
+.input-container textarea:focus {
+  outline: none;
+  border-color: rgba(122, 96, 255, 0.5);
+  box-shadow: 0 0 0 2px rgba(122, 96, 255, 0.2);
+}
+
+.input-container textarea:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.send-button {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(122, 96, 255, 0.2);
+  color: rgba(255, 255, 255, 0.8);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.send-button:hover:not(:disabled) {
+  background: rgba(122, 96, 255, 0.4);
+}
+
+.send-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.send-button.working {
+  background: rgba(236, 72, 153, 0.2);
+} 
