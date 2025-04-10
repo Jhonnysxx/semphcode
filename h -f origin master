@@ -1,0 +1,83 @@
+[33mcommit b6b4b05c7ac9105316f27cf874e7c649b1591eca[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: Seu Nome <seu.email@exemplo.com>
+Date:   Thu Apr 10 02:25:00 2025 -0300
+
+    Adicionar arquivos de configuração
+
+A	Dockerfile
+A	eslint.config.js
+A	index.html
+
+[33mcommit 439bbd76a1b0272f6744d5e4cbefc855955832a1[m
+Author: Seu Nome <seu.email@exemplo.com>
+Date:   Thu Apr 10 02:24:50 2025 -0300
+
+    Primeiro commit com arquivos do projeto
+
+A	README.md
+A	package.json
+A	public/arrow.svg
+A	public/logo.svg
+A	public/providers/deepseek.svg
+A	public/providers/fireworks-ai.svg
+A	public/providers/hyperbolic.svg
+A	public/providers/nebius.svg
+A	public/providers/novita.svg
+A	public/providers/sambanova.svg
+A	server.js
+A	src/assets/deepseek-color.svg
+A	src/assets/index.css
+A	src/assets/logo.svg
+A	src/assets/space.svg
+A	src/assets/success.mp3
+A	src/components/App.d.ts
+A	src/components/App.tsx
+A	src/components/App.tsx.new
+A	src/components/ask-ai/ask-ai.d.ts
+A	src/components/ask-ai/ask-ai.tsx
+A	src/components/chat/ChatInterface.d.ts
+A	src/components/chat/ChatInterface.tsx
+A	src/components/file-explorer/FileExplorer.tsx
+A	src/components/header/header.d.ts
+A	src/components/header/header.tsx
+A	src/components/image-search/ImageSearch.css
+A	src/components/image-search/ImageSearch.tsx
+A	src/components/loading/loading.d.ts
+A	src/components/loading/loading.tsx
+A	src/components/preview/FileTabs.d.ts
+A	src/components/preview/FileTabs.tsx
+A	src/components/preview/preview.d.ts
+A	src/components/preview/preview.tsx
+A	src/components/speech-prompt/speech-prompt.d.ts
+A	src/components/speech-prompt/speech-prompt.tsx
+A	src/hooks/useEditorLayout.d.ts
+A	src/hooks/useEditorLayout.ts
+A	src/main.d.ts
+A	src/main.tsx
+A	src/styles/global.css
+A	src/utils/consts.d.ts
+A	src/utils/consts.js
+A	src/utils/functions/fileOperations.d.ts
+A	src/utils/functions/fileOperations.ts
+A	src/utils/functions/fileSeparator.d.ts
+A	src/utils/functions/fileSeparator.ts
+A	src/utils/functions/imageApis.d.ts
+A	src/utils/functions/imageApis.ts
+A	src/vite-env.d.ts
+A	tsconfig.app.json
+A	tsconfig.json
+A	tsconfig.node.json
+A	utils/consts.d.ts
+A	utils/consts.js
+A	utils/consts.ts
+A	utils/types.d.ts
+A	utils/types.ts
+A	vite.config.ts
+
+[33mcommit 85561e79fb0f28962bdae3e38ff41c8aef1ccb53[m
+Author: Jhonny <jhonnysxx@gmail.com>
+Date:   Thu Apr 10 02:23:44 2025 -0300
+
+    Adicionar .gitignore
+
+A	.gitignore
